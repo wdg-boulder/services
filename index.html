@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>WDG – Exterior Home Detailing | Boulder, CO</title>
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Segoe UI', Arial, sans-serif;
+      background: #fff;
+      color: #222;
+    }
+
+    /* NAV */
+    nav {
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      padding: 16px 40px;
+      border-bottom: 1px solid #eee;
+    }
+
+    nav a {
+      color: #333;
+      text-decoration: none;
+      font-size: 15px;
+      font-weight: 600;
+      padding: 6px 16px;
+      border-radius: 4px;
+      transition: color 0.2s;
+    }
+
+    nav a:hover, nav a.active { color: #cc0000; }
+    nav a + a { margin-left: 4px; }
+
+    /* PAGES */
+    .page { display: none; }
+    .page.active { display: block; }
+
+    /* LOGO */
+    .logo-area {
+      text-align: center;
+      padding: 48px 20px 36px;
+    }
+
+    .logo {
+      font-family: Helvetica, Arial, sans-serif;
+      font-weight: 900;
+      font-size: 72px;
+      color: #cc0000;
+      letter-spacing: -2px;
+      line-height: 1;
+    }
+
+    .tagline {
+      font-size: 15px;
+      color: #888;
+      margin-top: 8px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+
+    /* HOME */
+    .home-content {
+      max-width: 660px;
+      margin: 0 auto;
+      padding: 20px 30px 60px;
+      text-align: center;
+    }
+
+    .home-content h1 {
+      font-size: 30px;
+      color: #111;
+      margin-bottom: 18px;
+      font-weight: 700;
+    }
+
+    .home-content p {
+      font-size: 17px;
+      color: #555;
+      line-height: 1.75;
+      margin-bottom: 32px;
+    }
+
+    .services-list {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 40px;
+    }
+
+    .service-tag {
+      background: #f4f4f4;
+      color: #333;
+      padding: 8px 18px;
+      border-radius: 20px;
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    .cta-btn {
+      display: inline-block;
+      background: #cc0000;
+      color: #fff;
+      padding: 13px 34px;
+      border-radius: 5px;
+      font-size: 15px;
+      font-weight: 700;
+      text-decoration: none;
+      transition: background 0.2s;
+      border: none;
+      cursor: pointer;
+    }
+
+    .cta-btn:hover { background: #a50000; }
+
+    /* REVIEWS PAGE */
+    #reviews {
+      max-width: 620px;
+      margin: 0 auto;
+      padding: 50px 30px 70px;
+    }
+
+    #reviews h2 {
+      font-size: 28px;
+      color: #111;
+      text-align: center;
+      margin-bottom: 6px;
+    }
+
+    #reviews .subtitle {
+      color: #999;
+      font-size: 15px;
+      text-align: center;
+      margin-bottom: 36px;
+    }
+
+    /* Leave a review form */
+    .leave-review-box {
+      border: 1.5px solid #eee;
+      border-radius: 8px;
+      padding: 28px;
+      margin-bottom: 50px;
+      background: #fafafa;
+    }
+
+    .leave-review-box h3 {
+      font-size: 18px;
+      color: #111;
+      margin-bottom: 20px;
+      text-align: center;
+    }
+
+    /* Star rating input */
+    .star-rating {
+      display: flex;
+      justify-content: center;
+      gap: 6px;
+      margin-bottom: 18px;
+      flex-direction: row-reverse;
+    }
+
+    .star-rating input { display: none; }
+
+    .star-rating label {
+      font-size: 34px;
+      color: #ddd;
+      cursor: pointer;
+      transition: color 0.15s;
+    }
+
+    .star-rating input:checked ~ label,
+    .star-rating label:hover,
+    .star-rating label:hover ~ label {
+      color: #cc0000;
+    }
+
+    .star-error {
+      color: #cc0000;
+      font-size: 13px;
+      text-align: center;
+      margin-top: -10px;
+      margin-bottom: 10px;
+      display: none;
+    }
+
+    .r-form-group { margin-bottom: 14px; }
+
+    .r-form-group label {
+      display: block;
+      font-size: 12px;
+      font-weight: 700;
+      color: #666;
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+      margin-bottom: 6px;
+    }
+
+    .r-form-group input,
+    .r-form-group textarea {
+      width: 100%;
+      padding: 10px 14px;
+      border: 1.5px solid #ddd;
+      border-radius: 5px;
+      font-size: 15px;
+      color: #222;
+      font-family: inherit;
+      background: #fff;
+      transition: border-color 0.2s;
+    }
+
+    .r-form-group input:focus,
+    .r-form-group textarea:focus {
+      outline: none;
+      border-color: #cc0000;
+    }
+
+    .r-form-group textarea { resize: vertical; min-height: 90px; }
+
+    .submit-review-btn {
+      width: 100%;
+      background: #cc0000;
+      color: #fff;
+      border: none;
+      padding: 12px;
+      border-radius: 5px;
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer;
+      margin-top: 4px;
+      transition: background 0.2s;
+    }
+
+    .submit-review-btn:hover { background: #a50000; }
+
+    .review-success {
+      display: none;
+      color: #2d7a3a;
+      text-align: center;
+      font-weight: 600;
+      font-size: 15px;
+      margin-top: 12px;
+    }
+
+    /* Average rating summary */
+    .rating-summary {
+      text-align: center;
+      margin-bottom: 36px;
+    }
+
+    .avg-score {
+      font-size: 48px;
+      font-weight: 800;
+      color: #111;
+      line-height: 1;
+    }
+
+    .avg-stars { color: #cc0000; font-size: 22px; margin: 4px 0; }
+
+    .avg-count { color: #999; font-size: 14px; }
+
+    /* Divider */
+    .section-divider {
+      border: none;
+      border-top: 1px solid #eee;
+      margin: 0 0 36px;
+    }
+
+    /* Individual reviews */
+    .review-item {
+      padding-bottom: 30px;
+      margin-bottom: 30px;
+      border-bottom: 1px solid #f0f0f0;
+    }
+
+    .review-item:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+
+    .review-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 6px;
+      flex-wrap: wrap;
+      gap: 4px;
+    }
+
+    .reviewer-name { font-weight: 700; color: #111; font-size: 15px; }
+    .review-date { color: #bbb; font-size: 13px; }
+    .review-stars { color: #cc0000; font-size: 16px; margin-bottom: 8px; }
+
+    .review-text {
+      font-size: 15px;
+      color: #555;
+      line-height: 1.7;
+      font-style: italic;
+    }
+
+    .no-reviews {
+      text-align: center;
+      color: #bbb;
+      font-size: 15px;
+      padding: 30px 0;
+    }
+
+    /* CONTACT */
+    #contact {
+      max-width: 500px;
+      margin: 0 auto;
+      padding: 60px 30px;
+      text-align: center;
+    }
+
+    #contact h2 { font-size: 28px; color: #111; margin-bottom: 8px; }
+
+    #contact .subtitle { color: #999; font-size: 15px; margin-bottom: 40px; }
+
+    .contact-details { margin-bottom: 40px; }
+
+    .contact-details p {
+      font-size: 16px;
+      color: #444;
+      margin-bottom: 10px;
+      line-height: 1.6;
+    }
+
+    .contact-details strong { color: #111; }
+
+    .copyable {
+      cursor: pointer;
+      position: relative;
+      display: inline-block;
+      transition: color 0.15s;
+    }
+
+    .copyable:hover { color: #cc0000; }
+
+    .copy-tooltip {
+      display: none;
+      position: absolute;
+      top: -28px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #111;
+      color: #fff;
+      font-size: 11px;
+      padding: 3px 8px;
+      border-radius: 4px;
+      white-space: nowrap;
+      pointer-events: none;
+    }
+
+    .copyable:hover .copy-tooltip { display: block; }
+
+    .copy-tooltip.copied { background: #2d7a3a; }
+
+    footer {
+      text-align: center;
+      padding: 28px;
+      border-top: 1px solid #eee;
+      color: #bbb;
+      font-size: 13px;
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a href="#" onclick="showPage('home')" id="nav-home" class="active">Home</a>
+  <a href="#" onclick="showPage('reviews')" id="nav-reviews">Reviews</a>
+  <a href="#" onclick="showPage('contact')" id="nav-contact">Contact</a>
+</nav>
+
+<!-- HOME -->
+<section id="home" class="page active">
+  <div class="logo-area">
+    <div class="logo">WDG</div>
+    <div class="tagline">Exterior Home Detailing · Boulder, CO</div>
+  </div>
+  <div class="home-content">
+    <h1>Your Neighbors. Your Home. Done Right.</h1>
+    <p>
+      Hello Boulder! We are WDG — three recent college graduates focused on entrepreneurship and providing a reliable, consistent service for our neighbors. We specialize in exterior home detailing with professional expertise. Feel free to reach out for an estimate.
+    </p>
+    <div class="services-list">
+      <span class="service-tag">Window Cleaning & Polishing</span>
+      <span class="service-tag">Track & Sill Cleaning</span>
+      <span class="service-tag">Gutter Cleaning</span>
+      <span class="service-tag">Exterior Detailing</span>
+    </div>
+    <p style="font-size:16px;color:#666;margin-bottom:32px;">No job too small — we're happy to help with small tasks and odd jobs around the home too.</p>
+    <a href="#" class="cta-btn" onclick="showPage('contact')">Get a Free Estimate</a>
+  </div>
+</section>
+
+<!-- REVIEWS -->
+<section id="reviews" class="page">
+
+  <h2>Reviews</h2>
+  <p class="subtitle">From our Boulder neighbors</p>
+
+  <!-- Leave a Review -->
+  <div class="leave-review-box">
+    <h3>Leave a Review</h3>
+
+    <div class="star-rating" id="star-rating">
+      <input type="radio" name="rating" id="s5" value="5"><label for="s5">★</label>
+      <input type="radio" name="rating" id="s4" value="4"><label for="s4">★</label>
+      <input type="radio" name="rating" id="s3" value="3"><label for="s3">★</label>
+      <input type="radio" name="rating" id="s2" value="2"><label for="s2">★</label>
+      <input type="radio" name="rating" id="s1" value="1"><label for="s1">★</label>
+    </div>
+    <div class="star-error" id="star-error">Please select a star rating.</div>
+
+    <div class="r-form-group">
+      <label>Your Name</label>
+      <input type="text" id="r-name" placeholder="First name or initials" />
+    </div>
+    <div class="r-form-group">
+      <label>Your Review</label>
+      <textarea id="r-text" placeholder="Tell others about your experience..."></textarea>
+    </div>
+    <button class="submit-review-btn" onclick="submitReview()">Post Review</button>
+    <div class="review-success" id="review-success">✅ Thanks! Your review has been posted.</div>
+  </div>
+
+  <!-- Summary -->
+  <div class="rating-summary" id="rating-summary"></div>
+
+  <hr class="section-divider" />
+
+  <!-- Review list -->
+  <div id="review-list"></div>
+
+</section>
+
+<!-- CONTACT -->
+<section id="contact" class="page">
+  <h2>Get In Touch</h2>
+  <p class="subtitle">Reach out and we'll get back to you quickly</p>
+
+  <div class="contact-details">
+    <p><strong>Location:</strong> Boulder, CO &amp; surrounding areas</p>
+    <p><strong>Phone:</strong> <span class="copyable" onclick="copyText(this, '+18084655817')"><span class="copy-tooltip" id="tt-phone">Click to copy</span>+1 (808) 465-5817</span></p>
+    <p><strong>Email:</strong> <span class="copyable" onclick="copyText(this, 'wdg.boulder@gmail.com')"><span class="copy-tooltip" id="tt-email">Click to copy</span>wdg.boulder@gmail.com</span></p>
+  </div>
+</section>
+
+<footer>
+  WDG Exterior Home Detailing &nbsp;·&nbsp; Boulder, CO
+</footer>
+
+<script>
+  // ── Seed reviews ──
+  const SEED = [];
+
+  function loadReviews() {
+    const stored = localStorage.getItem('wdg_reviews');
+    return stored ? JSON.parse(stored) : SEED;
+  }
+
+  function saveReviews(reviews) {
+    localStorage.setItem('wdg_reviews', JSON.stringify(reviews));
+  }
+
+  function starsHTML(n) {
+    return '★'.repeat(n) + '☆'.repeat(5 - n);
+  }
+
+  function renderReviews() {
+    const reviews = loadReviews();
+    const list = document.getElementById('review-list');
+    const summary = document.getElementById('rating-summary');
+
+    if (reviews.length === 0) {
+      list.innerHTML = '<p class="no-reviews">No reviews yet — be the first!</p>';
+      summary.innerHTML = '';
+      return;
+    }
+
+    const avg = (reviews.reduce((s, r) => s + r.rating, 0) / reviews.length).toFixed(1);
+    const avgRounded = Math.round(avg);
+
+    summary.innerHTML = `
+      <div class="avg-score">${avg}</div>
+      <div class="avg-stars">${starsHTML(avgRounded)}</div>
+      <div class="avg-count">${reviews.length} review${reviews.length !== 1 ? 's' : ''}</div>
+    `;
+
+    list.innerHTML = reviews.slice().reverse().map(r => `
+      <div class="review-item">
+        <div class="review-header">
+          <span class="reviewer-name">${escHtml(r.name) || 'Anonymous'}</span>
+          <span class="review-date">${r.date}</span>
+        </div>
+        <div class="review-stars">${starsHTML(r.rating)}</div>
+        <div class="review-text">"${escHtml(r.text)}"</div>
+      </div>
+    `).join('');
+  }
+
+  function escHtml(str) {
+    return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  }
+
+  function submitReview() {
+    const ratingEl = document.querySelector('input[name="rating"]:checked');
+    const name = document.getElementById('r-name').value.trim();
+    const text = document.getElementById('r-text').value.trim();
+    const starError = document.getElementById('star-error');
+    const successEl = document.getElementById('review-success');
+
+    if (!ratingEl) { starError.style.display = 'block'; return; }
+    starError.style.display = 'none';
+    if (!text) { document.getElementById('r-text').focus(); return; }
+
+    const reviews = loadReviews();
+    const now = new Date();
+    const month = now.toLocaleString('default', { month: 'long' });
+    reviews.push({
+      name: name || 'Anonymous',
+      rating: parseInt(ratingEl.value),
+      text,
+      date: `${month} ${now.getFullYear()}`
+    });
+    saveReviews(reviews);
+
+    // Reset form
+    document.querySelectorAll('input[name="rating"]').forEach(i => i.checked = false);
+    document.getElementById('r-name').value = '';
+    document.getElementById('r-text').value = '';
+    successEl.style.display = 'block';
+    setTimeout(() => successEl.style.display = 'none', 3500);
+
+    renderReviews();
+  }
+
+  function showPage(id) {
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('nav a').forEach(a => a.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+    document.getElementById('nav-' + id).classList.add('active');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    if (id === 'reviews') renderReviews();
+    return false;
+  }
+
+  function copyText(el, text) {
+    navigator.clipboard.writeText(text).then(() => {
+      const tooltip = el.querySelector('.copy-tooltip');
+      tooltip.textContent = 'Copied!';
+      tooltip.classList.add('copied');
+      setTimeout(() => {
+        tooltip.textContent = 'Click to copy';
+        tooltip.classList.remove('copied');
+      }, 1800);
+    });
+  }
+</script>
+
+</body>
+</html>
